@@ -1,11 +1,20 @@
 <?php
+include'config.php';
     $message='';
     if(isset($_POST['Sign_in'])){ 
        
         $email=$_POST['email'];
         $password=$_POST['password'];
         if(!empty($email) and !empty($password)){
-            $message='good';
+            $sql=$conn->prepare("select*from users where email=? ");
+            $sql->execute([$email]);
+            $user=$sql->fetch();
+            if($user && password_verify($password,$user['password'])){
+               header("Location: dashboard.php");
+                exit();
+            }else{
+                $message = "Invalid email or password";
+            }
 
         }else{
             $message ='fill out the form';
