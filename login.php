@@ -1,5 +1,6 @@
 <?php
 include'config.php';
+session_start();
     $message='';
     if(isset($_POST['Sign_in'])){ 
        
@@ -11,6 +12,7 @@ include'config.php';
             $user=$sql->fetch();
             if($user && password_verify($password,$user['password'])){
                header("Location: dashboard.php");
+                $_SESSION['email'] = $email;
                 exit();
             }else{
                 $message = "Invalid email or password";
@@ -19,8 +21,10 @@ include'config.php';
         }else{
             $message ='fill out the form';
         }
+
        
     }
+   
 ?>
 <!DOCTYPE html>
 <html lang="en">

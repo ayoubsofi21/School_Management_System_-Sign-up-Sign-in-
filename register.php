@@ -6,6 +6,8 @@
         $name=$_POST['name'];
         $email=$_POST['email'];
         $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+    if(!empty($name)&& !empty($email)&& !empty($password)){
+    
         // $check=mysqli_query($conn,"select*from users where email='$email'");
         $precom =$conn->prepare("SELECT id FROM users WHERE email=?");
         $precom->execute([$email]);
@@ -21,6 +23,10 @@
                     $message = "Error: " . mysqli_error($conn);
                  }
         }
+            
+    }else{
+        $message='name , email or password not valide';
+    }
        
     }
 ?>
@@ -39,7 +45,7 @@
         <h1 class="text-2xl font-bold text-white text-center mb-6">
             Create your account
         </h1>
-        <p><?php echo $message; ?></p>
+        <p ><?php echo $message; ?></p>
 
         <form class="space-y-5" method='post'>
             <div>
