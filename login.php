@@ -1,3 +1,18 @@
+<?php
+    $message='';
+    if(isset($_POST['Sign_in'])){ 
+       
+        $email=$_POST['email'];
+        $password=$_POST['password'];
+        if(!empty($email) and !empty($password)){
+            $message='good';
+
+        }else{
+            $message ='fill out the form';
+        }
+       
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,8 +28,9 @@
         <h1 class="text-2xl font-bold text-white text-center mb-6">
             Sign in to your account
         </h1>
+        <p class='text-red-500 bold text-center'><?php echo $message;?></p>
 
-        <form class="space-y-5">
+        <form class="space-y-5" method='post'>
             
             <div>
                 <label class="block text-sm text-gray-300 mb-1">
@@ -24,7 +40,7 @@
                     type="email" 
                     placeholder="name@company.com"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    required
+                    name='email'
                 >
             </div>
 
@@ -36,7 +52,8 @@
                     type="password" 
                     placeholder="••••••••"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
-                    required
+                    name='password'
+                    
                 >
             </div>
 
@@ -54,6 +71,7 @@
             <button 
                 type="submit"
                 class="w-full py-3 bg-blue-600 hover:bg-blue-700 transition rounded-lg text-white font-semibold"
+                name='Sign_in'
             >
                 Sign in
             </button>
