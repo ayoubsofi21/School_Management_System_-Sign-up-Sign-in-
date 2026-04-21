@@ -1,3 +1,29 @@
+<?php
+    include "config.php";
+    $message='';
+    if(isset($_POST['register'])){
+        // echo'you are clicked about register';
+        $name=$_POST['name'];
+        $email=$_POST['email'];
+        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        // $check=mysqli_query($conn,"select*from users where email='$email'");
+        $precom =$conn->prepare("SELECT id FROM users WHERE email=?");
+        $precom->execute([$email]);
+        if($precom->rowCount()>0){
+            $message='Email already exist';
+        }
+        else{
+            $sql="insert into users(name,email,password)values(?,?,?)";
+            $stmt=$conn->prepare($sql);
+              if ($stmt->execute([$name,$email,$password])) {
+                    $message = "Registration successful!";
+                } else {
+                    $message = "Error: " . mysqli_error($conn);
+                 }
+        }
+       
+    }
+?>
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -13,15 +39,17 @@
         <h1 class="text-2xl font-bold text-white text-center mb-6">
             Create your account
         </h1>
+        <p><?php echo $message; ?></p>
 
-        <form class="space-y-5">
+        <form class="space-y-5" method='post'>
             <div>
                 <label class="block text-sm text-gray-300 mb-1">Full Name</label>
                 <input 
                     type="text" 
                     placeholder="John Doe"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    required
+                    name='name'
+                    
                 >
             </div>
             <div>
@@ -30,7 +58,8 @@
                     type="email" 
                     placeholder="name@company.com"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    required
+                    name='email'
+                    
                 >
             </div>
             <div>
@@ -39,7 +68,8 @@
                     type="password" 
                     placeholder="••••••••"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    required
+                    name='password'
+                    
                 >
             </div>
             <div>
@@ -48,7 +78,7 @@
                     type="password" 
                     placeholder="••••••••"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
-                    required
+                    
                 >
             </div>
 
@@ -60,6 +90,7 @@
             <button 
                 type="submit"
                 class="w-full py-3 bg-green-600 hover:bg-green-700 transition rounded-lg text-white font-semibold"
+                name='register'
             >
                 Create account
             </button>
