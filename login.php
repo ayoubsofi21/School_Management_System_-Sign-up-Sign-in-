@@ -61,7 +61,7 @@
 
         <p class="text-center text-gray-400 text-sm mt-6">
             Don't have an account yet?
-            <a href="#" class="text-blue-400 hover:underline">Sign up</a>
+            <a href="register.php" class="text-blue-400 hover:underline">Sign up</a>
         </p>
 
     </div>

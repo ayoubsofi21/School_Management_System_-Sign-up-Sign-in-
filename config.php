@@ -1,10 +1,10 @@
 <?php
-$conn = new pdo("mysql:host=localhost;dbname=php_project", "root", "");
+try {
 
-if (!$conn){
-    echo("Connection failed: " . mysqli_connect_error());
+$conn = new pdo("mysql:host=localhost;dbname=php_project", "root", "");
+echo"connected with success";
+}catch(PDOException $e){
+     echo("Connection failed: " . $e->getMessage());
 }
-else{
-    echo"connected with success";
-}
+
 ?>
