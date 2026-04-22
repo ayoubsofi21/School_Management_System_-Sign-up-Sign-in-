@@ -12,7 +12,7 @@ session_start();
             if($user && password_verify($password,$user['password'])){
                header("Location: dashboard.php");
                 $_SESSION['email'] = $email;
-                $_SESSION['name']=$name;
+                $_SESSION['name']=$user['name'];
                 exit();
             }else{
                 $message = "Invalid email or password";
