@@ -18,7 +18,9 @@
             $sql="insert into users(name,email,password)values(?,?,?)";
             $stmt=$conn->prepare($sql);
               if ($stmt->execute([$name,$email,$password])) {
-                    $message = "Registration successful!";
+                    // $message = "Registration successful!";
+                    $_SESSION['name']=$name;
+                    header("Location: dashboard.php");
                 } else {
                     $message = "Error: " . mysqli_error($conn);
                  }
