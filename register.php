@@ -1,6 +1,8 @@
 <?php
+session_start();
     include "config.php";
     $message='';
+    $vide = '';
     if(isset($_POST['register'])){
         // echo'you are clicked about register';
         $name=$_POST['name'];
@@ -13,6 +15,7 @@
         $precom->execute([$email]);
         if($precom->rowCount()>0){
             $message='Email already exist';
+            
         }
         else{
             $sql="insert into users(name,email,password)values(?,?,?)";
@@ -21,6 +24,8 @@
                     // $message = "Registration successful!";
                     $_SESSION['name']=$name;
                     header("Location: dashboard.php");
+                    exit();
+              
                 } else {
                     $message = "Error: " . mysqli_error($conn);
                  }
@@ -28,6 +33,7 @@
             
     }else{
         $message='name , email or password not valide';
+      
     }
        
     }
@@ -44,12 +50,12 @@
 
     <div class="w-full max-w-md bg-gray-800 rounded-2xl shadow-xl p-8">
 
-        <h1 class="text-2xl font-bold text-white text-center mb-6">
+        <h1 class="text-2xl font-bold text-white text-center mb-2">
             Create your account
         </h1>
-        <p ><?php echo $message; ?></p>
+        <p class='text-red-500 text-center' ><?php echo $message; ?></p>
 
-        <form class="space-y-5" method='post'>
+        <form class="space-y-1" method='post'>
             <div>
                 <label class="block text-sm text-gray-300 mb-1">Full Name</label>
                 <input 
@@ -57,16 +63,19 @@
                     placeholder="John Doe"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                     name='name'
+                  
                     
                 >
             </div>
             <div>
-                <label class="block text-sm text-gray-300 mb-1">Email</label>
+                <label class="block text-sm text-gray-300 mb-1" >Email</label>
                 <input 
                     type="email" 
                     placeholder="name@company.com"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                     name='email'
+                    value='<?php echo htmlspecialchars($vide); ?>'
+
                     
                 >
             </div>
@@ -77,6 +86,7 @@
                     placeholder="••••••••"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                     name='password'
+
                     
                 >
             </div>

@@ -6,13 +6,13 @@ session_start();
         $email=$_POST['email'];
         $password=$_POST['password'];
         if(!empty($email) and !empty($password)){
-            $sql=$conn->prepare("select*from users where email=? ");
-            $sql->execute([$email]);
-            $user=$sql->fetch();
-            if($user && password_verify($password,$user['password'])){
+            $sql=$conn->query("select*from users where email='$email' ")->fetch();
+            // $sql->execute([$email]);
+            // $user=$sql->fetch();
+            if($sql && password_verify($password,$sql['password'])){
                header("Location: dashboard.php");
                 $_SESSION['email'] = $email;
-                $_SESSION['name']=$user['name'];
+                $_SESSION['name']=$sql['name'];
                 exit();
             }else{
                 $message = "Invalid email or password";
