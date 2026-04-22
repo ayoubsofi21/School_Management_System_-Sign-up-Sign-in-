@@ -3,7 +3,6 @@ include'config.php';
 session_start();
     $message='';
     if(isset($_POST['Sign_in'])){ 
-       
         $email=$_POST['email'];
         $password=$_POST['password'];
         if(!empty($email) and !empty($password)){
@@ -13,6 +12,7 @@ session_start();
             if($user && password_verify($password,$user['password'])){
                header("Location: dashboard.php");
                 $_SESSION['email'] = $email;
+                $_SESSION['name']=$name;
                 exit();
             }else{
                 $message = "Invalid email or password";
