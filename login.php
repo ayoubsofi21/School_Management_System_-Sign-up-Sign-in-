@@ -6,22 +6,23 @@ session_start();
         $email=$_POST['email'];
         $password=$_POST['password'];
         if(!empty($email) and !empty($password)){
-            $sql=$conn->query("select*from users where email='$email' ")->fetch();
-            // $sql->execute([$email]);
-            // $user=$sql->fetch();
-            if($sql && password_verify($password,$sql['password'])){
-               header("Location: dashboard.php");
+            $sql=$conn->prepare("select*from users where email=? ");
+            $sql->execute([$email]);
+            $user=$sql->fetch();
+            if($user && password_verify($password,$user['password'])){
                 $_SESSION['email'] = $email;
-                $_SESSION['name']=$sql['name'];
+                $_SESSION['name']=$user['name'];
+                header("Location: dashboard.php");
                 exit();
             }else{
-                $message = "Invalid email or password";
+                // $message = "fill out the form";
+                header("location: login.php?error='Invalid email or password'");
             }
 
         }else{
-            $message ='fill out the form';
-        }
+            $message = "fill out the form";
 
+        }
        
     }
    
@@ -52,8 +53,10 @@ session_start();
                 <input 
                     type="email" 
                     placeholder="name@company.com"
-                    class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     name='email'
+                    value='<?php echo isset($email)?htmlspecialchars($email):''; ?> '
+                    
                 >
             </div>
 
@@ -64,26 +67,27 @@ session_start();
                 <input 
                     type="password" 
                     placeholder="••••••••"
-                    class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-transparent"
+                    class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent"
                     name='password'
+                    value='<?php echo isset($password)?htmlspecialchars($password):'';?>'
                     
                 >
             </div>
 
             <div class="flex items-center justify-between text-sm">
                 <label class="flex items-center text-gray-300">
-                    <input type="checkbox" class="mr-2 rounded bg-gray-700 border-gray-600 text-blue-500 focus:ring-blue-500">
+                    <input type="checkbox" class="mr-2 rounded bg-gray-700 border-gray-600 text-green-500 focus:ring-green-500">
                     Remember me
                 </label>
 
-                <a href="#" class="text-blue-400 hover:underline">
+                <a href="#" class="text-green-400 hover:underline">
                     Forgot password?
                 </a>
             </div>
 
             <button 
                 type="submit"
-                class="w-full py-3 bg-blue-600 hover:bg-blue-700 transition rounded-lg text-white font-semibold"
+                class="w-full py-3 bg-green-600 hover:bg-green-700 transition rounded-lg text-white font-semibold"
                 name='Sign_in'
             >
                 Sign in
@@ -92,7 +96,7 @@ session_start();
 
         <p class="text-center text-gray-400 text-sm mt-6">
             Don't have an account yet?
-            <a href="register.php" class="text-blue-400 hover:underline">Sign up</a>
+            <a href="register.php" class="text-green-400 hover:underline">Sign up</a>
         </p>
 
     </div>
