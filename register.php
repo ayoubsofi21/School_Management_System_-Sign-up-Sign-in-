@@ -15,6 +15,7 @@ session_start();
             if($password!==$confirm_password){
                 $message='Passwords do not match ';
             }else{
+                    $password=password_hash($_POST['password'],PASSWORD_DEFAULT);
                  // $check=mysqli_query($conn,"select*from users where email='$email'");
                     $precom =$conn->prepare("SELECT id FROM users WHERE email=?");
                     $precom->execute([$email]);
