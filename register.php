@@ -7,29 +7,36 @@ session_start();
         // echo'you are clicked about register';
         $name=$_POST['name'];
         $email=$_POST['email'];
-        $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
-    if(!empty($name)&& !empty($email)&& !empty($password)){
-    
-        // $check=mysqli_query($conn,"select*from users where email='$email'");
-        $precom =$conn->prepare("SELECT id FROM users WHERE email=?");
-        $precom->execute([$email]);
-        if($precom->rowCount()>0){
-            $message='Email already exist';
-            
-        }
-        else{
-            $sql="insert into users(name,email,password)values(?,?,?)";
-            $stmt=$conn->prepare($sql);
-              if ($stmt->execute([$name,$email,$password])) {
-                    // $message = "Registration successful!";
-                    $_SESSION['name']=$name;
-                    header("Location: dashboard.php");
-                    exit();
-              
-                } else {
-                    $message = "Error: " . mysqli_error($conn);
-                 }
-        }
+        // $password = password_hash($_POST['password'], PASSWORD_DEFAULT);
+        $password=$_POST['password'];
+        $confirm_password=$_POST['confirm_password'];
+
+    if(!empty($name)&& !empty($email)&& !empty($password) && !empty($confirm_password)){
+            if($password!==$confirm_password){
+                $message='Passwords do not match ';
+            }else{
+                 // $check=mysqli_query($conn,"select*from users where email='$email'");
+                    $precom =$conn->prepare("SELECT id FROM users WHERE email=?");
+                    $precom->execute([$email]);
+                    if($precom->rowCount()>0){
+                        $message='Email already exist';
+                        
+                    }
+                    else{
+                        $sql="insert into users(name,email,password)values(?,?,?)";
+                        $stmt=$conn->prepare($sql);
+                        if ($stmt->execute([$name,$email,$password])) {
+                                // $message = "Registration successful!";
+                                $_SESSION['name']=$name;
+                                header("Location: dashboard.php");
+                                exit();
+                        
+                            } else {
+                                $message = "Error: " . mysqli_error($conn);
+                            }
+                    }
+            }
+           
             
     }else{
         $message='name , email or password not valide';
@@ -74,7 +81,7 @@ session_start();
                     placeholder="name@company.com"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                     name='email'
-                    value='<?php echo htmlspecialchars($vide); ?>'
+                    value='<?php echo isset($email)?htmlspecialchars($email):''; ?>'
 
                     
                 >
@@ -86,7 +93,7 @@ session_start();
                     placeholder="••••••••"
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                     name='password'
-
+                    value='<?php echo isset($password)?htmlspecialchars($password):'';?>'
                     
                 >
             </div>
@@ -95,9 +102,11 @@ session_start();
                 <input 
                     type="password" 
                     placeholder="••••••••"
+                    name='confirm_password'
                     class="w-full px-4 py-3 rounded-lg bg-gray-700 text-white border border-gray-600 focus:outline-none focus:ring-2 focus:ring-green-500"
                     
                 >
+
             </div>
 
             <div class="flex items-center text-sm text-gray-300">
