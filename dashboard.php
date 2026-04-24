@@ -1,7 +1,7 @@
 <?php 
 session_start();
 
-if(!isset($_SESSION['email'])){
+if(!isset($_SESSION['email']) ){
     header('location:login.php');
     exit();
 }
@@ -24,7 +24,7 @@ $name = $_SESSION['name'];
 
 <nav class="bg-blue-600 p-4 text-white flex justify-between">
     <h1 class="text-xl font-bold">My Dashboard</h1>
-    <a href="logout.php" class="bg-red-500 px-4 py-2 rounded">Logout</a>
+    <a href="logout.php" class="bg-red-500 px-4 py-2 rounded"  onclick="setTimeout(() => { location.reload(); }, 100);" >Logout</a>
 
 </nav>
 

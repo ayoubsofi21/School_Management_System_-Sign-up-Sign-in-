@@ -1,6 +1,6 @@
 <?php
+require("config.php");
 session_start();
-    include "config.php";
     $message='';
     $vide = '';
     if(isset($_POST['register'])){
@@ -28,8 +28,8 @@ session_start();
                         $stmt=$conn->prepare($sql);
                         if ($stmt->execute([$name,$email,$password])) {
                                 // $message = "Registration successful!";
-                                $_SESSION['name']=$name;
-                                header("Location: dashboard.php");
+                                // $_SESSION['name']=$name;
+                                header("Location: login.php");
                                 exit();
                         
                             } else {
