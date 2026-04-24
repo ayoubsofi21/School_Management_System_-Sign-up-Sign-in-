@@ -1,5 +1,12 @@
 <?php
 session_start();
-session_destroy();
-header('location:login.php');
-exit();
+if (isset($_SESSION['email'])) {
+    session_destroy();   
+    header('location:login.php'); 
+    exit();
+}
+else {
+    header('location:login.php'); 
+}
+
+?>

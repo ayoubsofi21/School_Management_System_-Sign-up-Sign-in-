@@ -1,6 +1,10 @@
 <?php
-include'config.php';
 session_start();
+    if (isset($_SESSION['logout'])) {
+    header('location:dashboard.php'); 
+    exit();
+    }
+    require('config.php');
     $message='';
     if(isset($_POST['Sign_in'])){ 
         $email=$_POST['email'];
@@ -80,7 +84,7 @@ session_start();
                     Remember me
                 </label>
 
-                <a href="#" class="text-green-400 hover:underline">
+                <a href="forget_password.php" class="text-green-400 hover:underline">
                     Forgot password?
                 </a>
             </div>
